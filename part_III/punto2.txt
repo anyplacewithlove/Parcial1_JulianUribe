@@ -1,0 +1,14 @@
+--Create a profile named "ventas" with the following specifications: 
+--(0.1) a) Idle time of 18 minutes b) Failed login attempts 3 c) Onle one session per user
+
+CREATE PROFILE ventas LIMIT
+SESSIONS_PER_USER 1
+CPU_PER_SESSION UNLIMITED
+CPU_PER_CALL UNLIMITED
+CONNECT_TIME 240
+IDLE_TIME 18
+PRIVATE_SGA 20 M
+FAILED_LOGIN_ATTEMPTS 3
+PASSWORD_REUSE_MAX 4
+PASSWORD_LOCK_TIME 1
+PASSWORD_GRACE_TIME 2;

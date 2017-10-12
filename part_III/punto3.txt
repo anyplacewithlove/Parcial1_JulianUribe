@@ -1,0 +1,8 @@
+--Create an user named "amartinez" with unlimited space on tablespace, the profile should be "ventas" (0.1)
+
+
+CREATE USER amartinez
+    IDENTIFIED BY amartinez12
+    DEFAULT TABLESPACE HACEB
+    QUOTA unlimited ON HACEB
+    PROFILE ventas;

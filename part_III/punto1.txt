@@ -1,0 +1,8 @@
+--Create a tablespace called "HACEB" with one datafile of 100Mb, the name of the datafile should be: haceb.dbf (0.1)
+
+CREATE TABLESPACE HACEB datafile 
+'haceb.dbf' size 100 M,
+AUTOEXTEND ON NEXT 1000K MAXSIZE 100M
+EXTENT MANAGEMENT LOCAL 
+SEGMENT SPACE MANAGEMENT AUTO
+ONLINE;

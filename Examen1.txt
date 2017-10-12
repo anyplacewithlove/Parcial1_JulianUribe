@@ -1,0 +1,129 @@
+CREATE TABLE CATEGORIES
+( id int PRIMARY KEY,
+name varchar2(255),
+season varchar2(255)
+);
+
+CREATE TABLE PRODUCTS
+( id int PRIMARY KEY,
+name varchar2(255),
+reference  varchar2(255),
+price decimal(10,3),
+ category_id int
+ 
+);
+
+CREATE TABLE ANSWERS
+( id int PRIMARY KEY ,
+number_of_question varchar2(255),
+answer   varchar2(255),
+ price decimal(10,3)
+);
+
+ alter table CATEGORIES
+ add constraint CK_Categories
+ check (season in ('winter','summer', 'spring', 'autumn'));
+ 
+  alter table PRODUCTS
+ add constraint CK_Price
+ check (price>0);
+ 
+   alter table  ANSWERS
+ add constraint CK_Answer
+ check (price>0);
+-----Clave Foranea 
+ALTER TABLE PRODUCTS
+ADD FOREIGN KEY (category_id) 
+REFERENCES  CATEGORIES  (id);
+
+
+--How many references of summer shoes are in the inventory? 
+
+select count (REFERENCE)
+from  PRODUCTS p
+inner join CATEGORIES c 
+on p.category_id=c.id
+where c.name='shoes' and c.season='summer';
+
+insert into ANSWERS (ID,NUMBER_OF_QUESTION,ANSWER)VALUES (1,'QUESTION 1',26);
+
+
+--How much does it cost the most expensive product of golf category? (0.2)
+
+select *
+from  PRODUCTS p
+inner join CATEGORIES c 
+on p.category_id=c.id
+where p.category_id=7
+ORDER BY PRICE DESC;
+
+insert into ANSWERS (ID,NUMBER_OF_QUESTION,ANSWER)VALUES (2,'QUESTION 2',963);
+
+
+--What is the reference of the product which has the minimum price of ski category? (0.2)
+
+select MIN(P.PRICE)
+from  PRODUCTS p
+inner join CATEGORIES c 
+on p.category_id=c.id
+where p.category_id=5
+ORDER BY PRICE DESC;
+
+insert into ANSWERS (ID,NUMBER_OF_QUESTION,ANSWER)VALUES (3,'QUESTION 3',1);
+
+--What is the name of the product which reference is 0E290CDE-FD74-1BA6-D84D-7F1E9AD5BF05 (0.2)
+
+SELECT NAME
+FROM PRODUCTS 
+WHERE  REFERENCE ='0E290CDE-FD74-1BA6-D84D-7F1E9AD5BF05';
+
+insert into ANSWERS (ID,NUMBER_OF_QUESTION,ANSWER)VALUES (4,'QUESTION 4','vel sapien');
+
+
+---What is the name of the category which product with name "Nulla eget" belongs to? (0.2)
+select C.NAME
+from  PRODUCTS p
+inner join CATEGORIES c 
+on p.category_id=c.id
+where P.NAME='Nulla eget';
+
+insert into ANSWERS (ID,NUMBER_OF_QUESTION,ANSWER)VALUES (5,'QUESTION 5','swim wear');
+
+--Create a tablespace called "HACEB" with one datafile of 100Mb, the name of the datafile should be: haceb.dbf (0.1)
+
+CREATE TABLESPACE HACEB datafile 
+'haceb.dbf' size 100 M,
+AUTOEXTEND ON NEXT 1000K MAXSIZE 100M
+EXTENT MANAGEMENT LOCAL 
+SEGMENT SPACE MANAGEMENT AUTO
+ONLINE;
+
+
+--Create a profile named "ventas" with the following specifications: 
+--(0.1) a) Idle time of 18 minutes b) Failed login attempts 3 c) Onle one session per user
+
+CREATE PROFILE ventas LIMIT
+SESSIONS_PER_USER 1
+CPU_PER_SESSION UNLIMITED
+CPU_PER_CALL UNLIMITED
+CONNECT_TIME 240
+IDLE_TIME 18
+PRIVATE_SGA 20 M
+FAILED_LOGIN_ATTEMPTS 3
+PASSWORD_REUSE_MAX 4
+PASSWORD_LOCK_TIME 1
+PASSWORD_GRACE_TIME 2;
+
+--Create an user named "amartinez" with unlimited space on tablespace, the profile should be "ventas" (0.1)
+
+
+CREATE USER amartinez
+    IDENTIFIED BY amartinez12
+    DEFAULT TABLESPACE HACEB
+    QUOTA unlimited ON HACEB
+    PROFILE ventas;
+
+--Add the roles "CONNECT" and "DBA" to user "amartinez" (0.1)
+
+GRANT DBA TO amartinez;
+GRANT CONNECT, RESOURCE TO amartinez;
