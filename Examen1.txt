@@ -12,8 +12,10 @@ price decimal(10,3),
  category_id int
  
 );
+julian
 
-CREATE TABLE ANSWERS
+
+CREATE TAiddokdokdBLE ANSWERS
 ( id int PRIMARY KEY ,
 number_of_question varchar2(255),
 answer   varchar2(255),
